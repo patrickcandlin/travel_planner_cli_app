@@ -15,13 +15,13 @@ class Getdata
         
         self.retrieve_data #gets the api hash for USD base
         
-        country_hash = Country.all.select do |country| #gets country hash when provided country
-            country[:countryName] == user_country
-        end 
+        country_hash =  Country.all.select do |country| #gets country hash when provided country
+                            country[:countryName] == user_country
+                        end 
         
         code = code.first[:currencyCode] #gets the currencyCode when given country_hash
         
-        @response["rates"][code] #takes the API hash and returns the
+        @response["rates"][code] #takes the API hash and returns the exchange rate.
     end
 
 
