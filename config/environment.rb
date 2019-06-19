@@ -9,4 +9,4 @@ ActiveRecord::Base.establish_connection(
 )
 
 # CommandLineInterface.say_hi
-# binding.pry
+binding.pry

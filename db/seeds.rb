@@ -9,5 +9,7 @@ require "json"
 #     Country.create(countryName: country["countryName"], capital: country["capital"], currencyCode: country["currencyCode"], countryCode: country["countryCode"], population: country["population"])
 # end
 
-Traveler.create(userName: "Patrick")
-Traveler.create(userName: "Dave")
+# Traveler.create(userName: "Patrick")
+# Traveler.create(userName: "Dave")
+
+Trip.create(budget: 1000, tripNotes: "see grandma", country_id: 5, traveler_id: 2)
