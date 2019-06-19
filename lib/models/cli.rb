@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class CommandLineInterface
 
   def self.welcome
@@ -39,3 +40,6 @@ class CommandLineInterface
 
 
 end
+=======
+
+>>>>>>> ee74087338622ac420c2634376d170aa8dfcaf52

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_18_190134) do
+ActiveRecord::Schema.define(version: 2019_06_19_204757) do
 
   create_table "countries", force: :cascade do |t|
     t.string "countryName"
@@ -18,6 +18,19 @@ ActiveRecord::Schema.define(version: 2019_06_18_190134) do
     t.string "currencyCode"
     t.string "countryCode"
     t.string "population"
+  end
+
+  create_table "travelers", force: :cascade do |t|
+    t.string "userName"
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.float "budget"
+    t.text "tripNotes"
+    t.integer "traveler_id"
+    t.integer "country_id"
+    t.index ["country_id"], name: "index_trips_on_country_id"
+    t.index ["traveler_id"], name: "index_trips_on_traveler_id"
   end
 
 end
