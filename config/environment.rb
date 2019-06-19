@@ -7,5 +7,5 @@ ActiveRecord::Base.establish_connection(
     :adapter => "sqlite3",
     :database => "db/travelapp.sqlite"
 )
-
-binding.pry
+CommandLineInterface.main_menu
+# binding.pry
