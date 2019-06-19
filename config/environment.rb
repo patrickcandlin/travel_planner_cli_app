@@ -1,5 +1,5 @@
-require "sinatra/activerecord"
 require "require_all"
+require "sinatra/activerecord"
 require "pry"
 require_all "./lib"
 
@@ -8,4 +8,5 @@ ActiveRecord::Base.establish_connection(
     :database => "db/travelapp.sqlite"
 )
 
-binding.pry
+# CommandLineInterface.say_hi
+# binding.pry
