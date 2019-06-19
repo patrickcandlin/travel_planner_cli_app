@@ -18,8 +18,10 @@ class Getdata
         country_hash =  Country.all.select do |country| #gets country hash when provided country
                             country[:countryName] == user_country
                         end 
-        
+
         code = country_hash.first[:currencyCode] #gets the currencyCode when given country_hash
+
+        
         
         @response["rates"][code] #takes the API hash and returns the exchange rate.
     end
