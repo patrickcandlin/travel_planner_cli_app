@@ -1,5 +1,5 @@
 require "pry"
-class CommandLineInterface
+class d
 
   def self.welcome
     puts
@@ -77,7 +77,7 @@ class CommandLineInterface
       user_reason = gets.chomp
       puts "...and, which country are you traveling to?"
       country = gets.chomp
-      country_traveling_to = Country.find_by(countryName: country)
+      country_traveling_to = Country.real_country(country)
       Trip.create(budget: user_budget, tripNotes: user_reason, traveler_id: @current_user.id, country_id: country_traveling_to.id)
       puts "Your trip has been saved!"
       puts
@@ -92,8 +92,7 @@ class CommandLineInterface
       puts
       puts "please make your selection by ID number"
       user_selection = gets.chomp
-      user_wants_to_delete = Trip.find(user_selection)
-      user_wants_to_delete.delete
+      user_wants_to_delete = @current_user.user_trips?(user_selection)
       puts "That trip is deleted."
       main_menu
     end
@@ -136,7 +135,7 @@ class CommandLineInterface
       if user_menu_selection.upcase == 'D'
         puts "What would you like to update your destination to be?"
         user_destination_update = gets.chomp
-        the_country_id= Country.find_by(countryName: user_destination_update).id
+        the_country_id= Country.real_country(user_destination_update).id
         user_wants_to_update.update(country_id: the_country_id)
         main_menu
       elsif user_menu_selection.upcase == 'B'
@@ -156,7 +155,7 @@ class CommandLineInterface
     def self.get_country_info
       puts "Which country would you like to know more about?"
       user_response = gets.chomp.capitalize
-      current_selection = Country.find_by(countryName: user_response)
+      current_selection = Country.real_country(user_response)
       puts "Great! Here's some basic information about #{current_selection.countryName}:
       Capital: #{current_selection.capital}
       Currency: #{current_selection.currencyCode}
