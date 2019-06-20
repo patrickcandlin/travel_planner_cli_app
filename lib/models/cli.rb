@@ -3,16 +3,17 @@ class CommandLineInterface
 
   def self.welcome
     puts
-    puts "Hi, welcome to Tripoggan!
-    If you're a returning user, enter '1'. If you're new, enter '2'."
+    puts "Hi, welcome to Tripoggan!"
+    puts
+    puts "If you're a returning user, enter '1'. If you're new, enter '2'."
     user_response = gets.chomp
     if user_response == "1"
       puts "Enter username"
       username = gets.chomp
       if Traveler.exists?(userName: username)
         @current_user = Traveler.find_by(userName: username)
-      else create_username
-      
+      else
+        create_username
       end
     elsif user_response == "2"
       create_username
@@ -20,7 +21,7 @@ class CommandLineInterface
       welcome_invalid
     end
   end
-  
+
   def self.welcome_invalid
     puts "WHAT ARE YOU DOING?! '1', or '2'!"
     welcome
@@ -29,10 +30,15 @@ class CommandLineInterface
   def self.create_username
     puts "Please choose a username:"
     user_response = gets.chomp
-    if Traveler.exists?(userName: user_response)  
-      puts "that name is already in use" 
-      welcome 
-    else Traveler.create(userName: user_response)
+    puts
+    if Traveler.exists?(userName: user_response)
+      puts
+      puts "that name is already in use"
+      welcome
+    else
+      @current_user = Traveler.create(userName: user_response)
+      puts "Welcome, #{user_response}!"
+      puts
     end
   end
 
@@ -98,21 +104,18 @@ class CommandLineInterface
         puts "You don't have any trips scheduled."
       else @current_user.trips.each do |trip|
         puts "You're going to #{trip.country.countryName}; you've budgeted #{trip.budget}. These are your notes: #{trip.tripNotes}"
-        puts "Your budget in #{trip.country.currencyCode}, #{trip.country.countryName}'s local currency, is #{sprintf("%.2f", Getdata.get_rate(trip.country.countryName) * trip.budget)}"
+        if Getdata.get_rate(trip.country.countryName) == nil
+          puts "Sorry, we don't currently have exchange rate information for that country."
+          puts
+        else
+          puts "Your budget in #{trip.country.currencyCode}, #{trip.country.countryName}'s local currency, is #{sprintf("%.2f", Getdata.get_rate(trip.country.countryName) * trip.budget)}"
+          puts
+        end
       end
       end
       puts
       puts
       sleep(3)
-      # puts "'M' for Main Menu, or 'Q' to quit"
-      # user_choice = gets.chomp.upcase
-      # if user_choice == "M"
-      #   main_menu
-      # elsif user_choice == "Q"
-      #   puts "See you soon!"
-      # else
-      #   puts "'M' for Main Menu, or 'Q' to quit"
-      # end
       main_menu
     end
 
