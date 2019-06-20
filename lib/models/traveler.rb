@@ -11,7 +11,7 @@ class Traveler < ActiveRecord::Base
         if selection.upcase == 'M'
             return CommandLineInterface.main_menu
         else
-        Trip.find(selection.to_i).destroy
+        Trip.find(selection.to_i)
         end
     end
 end

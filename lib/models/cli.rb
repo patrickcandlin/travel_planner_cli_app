@@ -1,5 +1,5 @@
 require "pry"
-class d
+class CommandLineInterface
 
   def self.welcome
     puts
@@ -93,6 +93,7 @@ class d
       puts "please make your selection by ID number"
       user_selection = gets.chomp
       user_wants_to_delete = @current_user.user_trips?(user_selection)
+      user_wants_to_delete.destroy
       puts "That trip is deleted."
       main_menu
     end
@@ -126,7 +127,7 @@ class d
       end
       puts "please make your selection by ID number"
       user_selection = gets.chomp
-      user_wants_to_update = Trip.find(user_selection)
+      user_wants_to_update = @current_user.user_trips?(user_selection)
       puts "What would you like to update?
         Type 'D' for DESTINATION
         Type 'B' for BUDGET
