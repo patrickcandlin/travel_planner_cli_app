@@ -88,7 +88,7 @@ class CommandLineInterface
       puts "...and your reason for traveling?"
       user_reason = gets.chomp
       puts "...and, which country are you traveling to?"
-      country = gets.chomp
+      country = gets.chomp.capitalize
       country_traveling_to = Country.real_country(country)
       Trip.create(budget: user_budget, tripNotes: user_reason, traveler_id: @current_user.id, country_id: country_traveling_to.id)
       puts "Your trip has been saved!"
