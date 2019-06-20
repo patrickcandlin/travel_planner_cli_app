@@ -8,5 +8,7 @@ ActiveRecord::Base.establish_connection(
     :database => "db/travelapp.sqlite"
 )
 
-# CommandLineInterface.say_hi
-binding.pry
+ActiveRecord::Base.logger = nil
+
+CommandLineInterface.runner
+# binding.pry
