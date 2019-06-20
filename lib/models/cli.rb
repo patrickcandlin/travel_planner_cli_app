@@ -97,6 +97,7 @@ class CommandLineInterface
     end
 
     def self.delete_trip
+      @current_user = Traveler.find_by(userName: @current_user.userName)
       if @current_user.trips.empty?
         puts
         puts "You don't have any trips to delete."
@@ -111,7 +112,7 @@ class CommandLineInterface
         puts
         puts "please make your selection by ID number"
         user_selection = gets.chomp
-        user_wants_to_delete = Trip.find(user_selection)
+        user_wants_to_delete = @current_user.user_trips?(user_selection)
         user_wants_to_delete.delete
         puts "That trip is deleted."
         main_menu
@@ -157,7 +158,7 @@ class CommandLineInterface
         end
         puts "please make your selection by ID number"
         user_selection = gets.chomp
-        user_wants_to_update = Trip.find(user_selection)
+        user_wants_to_update = @current_user.user_trips?(user_selection)
         puts "What would you like to update?
           Type 'D' for DESTINATION
           Type 'B' for BUDGET
@@ -185,8 +186,8 @@ class CommandLineInterface
 
     def self.get_country_info
       puts "Which country would you like to know more about?"
-      user_response = gets.chomp.capitalize
-      current_selection = Country.find_by(countryName: user_response)
+      user_response = gets.chomp
+      current_selection = Country.real_country(user_response.capitalize)
       puts
       puts "Great! Here's some basic info on #{current_selection.countryName}:
       Capital: #{current_selection.capital}
