@@ -9,17 +9,21 @@ class CommandLineInterface
       puts "Enter username"
       username = gets.chomp
       if Traveler.exists?(userName: username)
-        @current_user = @current_user = Traveler.find_by(userName: username)
+        @current_user = Traveler.find_by(userName: username)
       else create_username
       
       end
     elsif user_response == "2"
       create_username
     else
-      puts "WHAT ARE YOU DOING?! '1', or '2'!"
+      welcome_invalid
     end
   end
-
+  
+  def self.welcome_invalid
+    puts "WHAT ARE YOU DOING?! '1', or '2'!"
+    welcome
+  end
 
   def self.create_username
     puts "Please choose a username:"
@@ -54,7 +58,6 @@ class CommandLineInterface
         update_trip
       end
   end
-
     def self.create_trip
       puts "What's your budget?"
       user_budget = gets.chomp
@@ -84,6 +87,7 @@ class CommandLineInterface
     end
 
     def self.review_trip
+      @current_user = Traveler.find_by(userName: @current_user.userName)
       if @current_user.trips.empty?
         puts "You don't have any trips scheduled."
       else @current_user.trips.each do |trip|
@@ -129,16 +133,19 @@ class CommandLineInterface
         puts "What would you like to update your budget to be?"
         user_budget_update = gets.chomp
         user_wants_to_update.update(budget: user_budget_update)
+        main_menu
       elsif user_menu_selection.upcase == 'N'
         puts "What would you like to update your notes to be?"
         user_notes_update = gets.chomp
         user_wants_to_update.update(tripNotes: user_notes_update)
+        main_menu
       end
       main_menu
     end
 
     def self.runner
       welcome
+      # binding.pry
       main_menu
     end
 end
