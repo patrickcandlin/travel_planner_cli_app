@@ -8,7 +8,7 @@ class CommandLineInterface
     if user_response == "1"
       puts "Enter username"
       username = gets.chomp
-      if Traveler.exists?(userName: userName)
+      if Traveler.exists?(userName: username)
         @current_user = @current_user = Traveler.find_by(userName: username)
       else create_username
       
@@ -84,8 +84,11 @@ class CommandLineInterface
     end
 
     def self.review_trip
-      @current_user.trips.each do |trip|
+      if @current_user.trips.empty?
+        puts "You don't have any trips scheduled."
+      else @current_user.trips.each do |trip|
         puts "You're going to #{trip.country.countryName}; you've budgeted #{trip.budget}. These are your notes: #{trip.tripNotes}"
+        end
       end
       puts
       puts
