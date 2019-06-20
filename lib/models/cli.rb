@@ -8,21 +8,25 @@ class CommandLineInterface
     if user_response == "1"
       puts "Enter username"
       username = gets.chomp
-      if Traveler.find_by(userName: username) == nil
-        create_username
-      else @current_user = Traveler.find_by(userName: username)
+      if Traveler.exists?(userName: userName)
+        @current_user = @current_user = Traveler.find_by(userName: username)
+      else create_username
+      
+      end
     elsif user_response == "2"
-      puts "This feature in development. Check back soon!"
-      exit
+      create_username
     else
       puts "WHAT ARE YOU DOING?! '1', or '2'!"
     end
   end
-def.self.current_user
-  puts "Please choose a username:"
-  user_response = gets.chomp
-  
-end
+
+
+  def self.create_username
+    puts "Please choose a username:"
+    user_response = gets.chomp
+    Traveler.exists?(userName: user_reason) ? puts "that name is already in use" welcome : Traveler.create(userName: user_response)
+  end
+
   def self.main_menu
     puts "  What would you like to do?
 
@@ -45,7 +49,7 @@ end
       elsif user_response == 'U'
         update_trip
       end
-    end
+  end
 
     def self.create_trip
       puts "What's your budget?"
@@ -130,4 +134,4 @@ end
       welcome
       main_menu
     end
-  end
+end
