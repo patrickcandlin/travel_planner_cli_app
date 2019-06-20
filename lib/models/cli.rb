@@ -8,12 +8,30 @@ class CommandLineInterface
     if user_response == "1"
       puts "Enter username"
       username = gets.chomp
-      @current_user = Traveler.find_by(userName: username)
+      if Traveler.exists?(userName: username)
+        @current_user = Traveler.find_by(userName: username)
+      else create_username
+      
+      end
     elsif user_response == "2"
-      puts "This feature in development. Check back soon!"
-      exit
+      create_username
     else
-      puts "WHAT ARE YOU DOING?! '1', or '2'!"
+      welcome_invalid
+    end
+  end
+  
+  def self.welcome_invalid
+    puts "WHAT ARE YOU DOING?! '1', or '2'!"
+    welcome
+  end
+
+  def self.create_username
+    puts "Please choose a username:"
+    user_response = gets.chomp
+    if Traveler.exists?(userName: user_response)  
+      puts "that name is already in use" 
+      welcome 
+    else Traveler.create(userName: user_response)
     end
   end
 
@@ -39,8 +57,7 @@ class CommandLineInterface
       elsif user_response == 'U'
         update_trip
       end
-    end
-
+  end
     def self.create_trip
       puts "What's your budget?"
       user_budget = gets.chomp
@@ -70,8 +87,12 @@ class CommandLineInterface
     end
 
     def self.review_trip
-      @current_user.trips.each do |trip|
+      @current_user = Traveler.find_by(userName: @current_user.userName)
+      if @current_user.trips.empty?
+        puts "You don't have any trips scheduled."
+      else @current_user.trips.each do |trip|
         puts "You're going to #{trip.country.countryName}; you've budgeted #{trip.budget}. These are your notes: #{trip.tripNotes}"
+        end
       end
       puts
       puts
@@ -105,14 +126,26 @@ class CommandLineInterface
       if user_menu_selection.upcase == 'D'
         puts "What would you like to update your destination to be?"
         user_destination_update = gets.chomp
-        user_wants_to_update.country = Country.find_by(countryName: user_destination_update)
+        the_country_id= Country.find_by(countryName: user_destination_update).id
+        user_wants_to_update.update(country_id: the_country_id)
+        main_menu
+      elsif user_menu_selection.upcase == 'B'
+        puts "What would you like to update your budget to be?"
+        user_budget_update = gets.chomp
+        user_wants_to_update.update(budget: user_budget_update)
+        main_menu
+      elsif user_menu_selection.upcase == 'N'
+        puts "What would you like to update your notes to be?"
+        user_notes_update = gets.chomp
+        user_wants_to_update.update(tripNotes: user_notes_update)
         main_menu
       end
-
+      main_menu
     end
 
     def self.runner
       welcome
+      # binding.pry
       main_menu
     end
-  end
+end
