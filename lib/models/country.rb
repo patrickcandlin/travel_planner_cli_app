@@ -2,7 +2,7 @@ class Country < ActiveRecord::Base
     has_many :trips
     has_many :travelers, through: :trips
 
-    def real_country(country)
+    def self.real_country(country)
         until Country.exists?(countryName: country) do
           puts "Sorry I do not recognize that country. Please check your spelling."
           country = gets.chomp
