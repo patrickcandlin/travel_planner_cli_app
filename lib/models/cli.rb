@@ -8,7 +8,9 @@ class CommandLineInterface
     if user_response == "1"
       puts "Enter username"
       username = gets.chomp
-      @current_user = Traveler.find_by(userName: username)
+      if Traveler.find_by(userName: username) == nil
+        create_username
+      else @current_user = Traveler.find_by(userName: username)
     elsif user_response == "2"
       puts "This feature in development. Check back soon!"
       exit
@@ -16,7 +18,11 @@ class CommandLineInterface
       puts "WHAT ARE YOU DOING?! '1', or '2'!"
     end
   end
-
+def.self.current_user
+  puts "Please choose a username:"
+  user_response = gets.chomp
+  
+end
   def self.main_menu
     puts "  What would you like to do?
 
