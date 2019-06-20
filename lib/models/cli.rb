@@ -115,7 +115,7 @@ class CommandLineInterface
       elsif user_menu_selection.upcase == 'N'
         puts "What would you like to update your notes to be?"
         user_notes_update = gets.chomp
-        user_wants_to_update.update(notes: user_notes_update)
+        user_wants_to_update.update(tripNotes: user_notes_update)
       end
       main_menu
     end
