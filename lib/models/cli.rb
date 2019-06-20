@@ -24,7 +24,11 @@ class CommandLineInterface
   def self.create_username
     puts "Please choose a username:"
     user_response = gets.chomp
-    Traveler.exists?(userName: user_reason) ? puts "that name is already in use" welcome : Traveler.create(userName: user_response)
+    if Traveler.exists?(userName: user_response)  
+      puts "that name is already in use" 
+      welcome 
+    else Traveler.create(userName: user_response)
+    end
   end
 
   def self.main_menu

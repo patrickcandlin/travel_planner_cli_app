@@ -10,5 +10,5 @@ ActiveRecord::Base.establish_connection(
 
 ActiveRecord::Base.logger = nil
 
-# CommandLineInterface.runner
-binding.pry
+CommandLineInterface.runner
+# binding.pry
