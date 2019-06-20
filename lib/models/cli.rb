@@ -2,7 +2,8 @@ require "pry"
 class CommandLineInterface
 
   def self.welcome
-    puts "Hi, welcome to <name of app>!
+    puts
+    puts "Hi, welcome to Tripoggan!
     If you're a returning user, enter '1'. If you're new, enter '2'."
     user_response = gets.chomp
     if user_response == "1"
@@ -42,6 +43,7 @@ class CommandLineInterface
     Type 'R' to REVIEW your trip(s)
     Type 'U' to UPDATE a trip
     Type 'D' to DELETE an existing trip
+    Type 'I' to GET INFO about a country
     Type 'Q' to QUIT
 
     Hit return after entering your selection"
@@ -53,9 +55,13 @@ class CommandLineInterface
       elsif user_response == 'D'
         delete_trip
       elsif user_response == "Q"
+        puts
         puts "See you soon!"
+        puts
       elsif user_response == 'U'
         update_trip
+      elsif user_response == "I"
+        get_country_info
       end
   end
     def self.create_trip
@@ -92,7 +98,8 @@ class CommandLineInterface
         puts "You don't have any trips scheduled."
       else @current_user.trips.each do |trip|
         puts "You're going to #{trip.country.countryName}; you've budgeted #{trip.budget}. These are your notes: #{trip.tripNotes}"
-        end
+        puts "Your budget in #{trip.country.currencyCode}, #{trip.country.countryName}'s local currency, is #{sprintf("%.2f", Getdata.get_rate(trip.country.countryName) * trip.budget)}"
+      end
       end
       puts
       puts
@@ -140,6 +147,18 @@ class CommandLineInterface
         user_wants_to_update.update(tripNotes: user_notes_update)
         main_menu
       end
+      main_menu
+    end
+
+    def self.get_country_info
+      puts "Which country would you like to know more about?"
+      user_response = gets.chomp.capitalize
+      current_selection = Country.find_by(countryName: user_response)
+      puts "Great! Here's some basic information about #{current_selection.countryName}:
+      Capital: #{current_selection.capital}
+      Currency: #{current_selection.currencyCode}
+      Population: #{current_selection.population}"
+      puts
       main_menu
     end
 
