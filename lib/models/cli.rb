@@ -71,12 +71,14 @@ class CommandLineInterface
       user_reason = gets.chomp
       puts "...and, which country are you traveling to?"
       country = gets.chomp
-      country_traveling_to = Country.find_by(countryName: country)
+      country_traveling_to = Country.real_country(country)#Country.find_by(countryName: country)
       Trip.create(budget: user_budget, tripNotes: user_reason, traveler_id: @current_user.id, country_id: country_traveling_to.id)
       puts "Your trip has been saved!"
       puts
       main_menu
     end
+
+    
 
     def self.delete_trip
       puts "Which trip would you like to delete?"
@@ -94,12 +96,12 @@ class CommandLineInterface
 
     def self.review_trip
       @current_user = Traveler.find_by(userName: @current_user.userName)
-      if @current_user.trips.empty?
-        puts "You don't have any trips scheduled."
-      else @current_user.trips.each do |trip|
-        puts "You're going to #{trip.country.countryName}; you've budgeted #{trip.budget}. These are your notes: #{trip.tripNotes}"
-        puts "Your budget in #{trip.country.currencyCode}, #{trip.country.countryName}'s local currency, is #{sprintf("%.2f", Getdata.get_rate(trip.country.countryName) * trip.budget)}"
-      end
+        if @current_user.trips.empty?
+          puts "You don't have any trips scheduled."
+        else @current_user.trips.each do |trip|
+          puts "You're going to #{trip.country.countryName}; you've budgeted #{trip.budget}. These are your notes: #{trip.tripNotes}"
+          puts "Your budget in #{trip.country.currencyCode}, #{trip.country.countryName}'s local currency, is #{sprintf("%.2f", Getdata.get_rate(trip.country.countryName) * trip.budget)}"
+        end
       end
       puts
       puts
