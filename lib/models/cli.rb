@@ -108,8 +108,16 @@ class CommandLineInterface
         the_country_id= Country.find_by(countryName: user_destination_update).id
         user_wants_to_update.update(country_id: the_country_id)
         main_menu
+      elsif user_menu_selection.upcase == 'B'
+        puts "What would you like to update your budget to be?"
+        user_budget_update = gets.chomp
+        user_wants_to_update.update(budget: user_budget_update)
+      elsif user_menu_selection.upcase == 'N'
+        puts "What would you like to update your notes to be?"
+        user_notes_update = gets.chomp
+        user_wants_to_update.update(notes: user_notes_update)
       end
-
+      main_menu
     end
 
     def self.runner
