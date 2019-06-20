@@ -105,7 +105,8 @@ class CommandLineInterface
       if user_menu_selection.upcase == 'D'
         puts "What would you like to update your destination to be?"
         user_destination_update = gets.chomp
-        user_wants_to_update.country = Country.find_by(countryName: user_destination_update)
+        the_country_id= Country.find_by(countryName: user_destination_update).id
+        user_wants_to_update.update(country_id: the_country_id)
         main_menu
       end
 
