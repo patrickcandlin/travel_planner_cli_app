@@ -111,12 +111,19 @@ class CommandLineInterface
         end
         puts
         puts "please make your selection by ID number"
+        puts "Or if you do not want to delete any trips. Please type 'M' for MAIN MENU"
+      end
         user_selection = gets.chomp
+      
+      if user_selection.capitalize == 'M'
+        main_menu
+      else
         user_wants_to_delete = @current_user.user_trips?(user_selection)
         user_wants_to_delete.delete
         puts "That trip is deleted."
         main_menu
       end
+        
     end
 
     def self.review_trip
@@ -144,6 +151,7 @@ class CommandLineInterface
     end
 
     def self.update_trip
+      @current_user = Traveler.find_by(userName: @current_user.userName)
       if @current_user.trips.empty?
         puts
         puts "You don't have any trips to update."
@@ -162,7 +170,8 @@ class CommandLineInterface
         puts "What would you like to update?
           Type 'D' for DESTINATION
           Type 'B' for BUDGET
-          Type 'N' for NOTES"
+          Type 'N' for NOTES
+          Type 'M' for MAIN MENU"
         user_menu_selection = gets.chomp
         if user_menu_selection.upcase == 'D'
           puts "What would you like to update your destination to be?"
@@ -179,6 +188,8 @@ class CommandLineInterface
           puts "What would you like to update your notes to be?"
           user_notes_update = gets.chomp
           user_wants_to_update.update(tripNotes: user_notes_update)
+          main_menu
+        elsif user_menu_selection.upcase == 'M'
           main_menu
         end
       end
