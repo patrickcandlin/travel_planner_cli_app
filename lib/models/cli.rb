@@ -208,7 +208,7 @@ class CommandLineInterface
       puts "Great! Here's some basic info on #{current_selection.countryName}:
       Capital: #{current_selection.capital}
       Currency: #{current_selection.currencyCode}
-      Population: #{current_selection.population}"
+      Population: #{current_selection.population.reverse.scan(/.{3}|.+/).join(",").reverse}"
       puts
       main_menu
     end
