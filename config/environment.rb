@@ -1,6 +1,7 @@
 require "require_all"
 require "sinatra/activerecord"
 require "pry"
+require "colorize"
 require_all "./lib"
 
 ActiveRecord::Base.establish_connection(
