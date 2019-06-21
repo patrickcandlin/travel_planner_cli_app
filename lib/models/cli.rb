@@ -76,7 +76,11 @@ class CommandLineInterface
         update_trip
       elsif user_response == "I"
         get_country_info
+      else
+        puts "Type a 'C', 'R', 'U', 'R', 'D', 'I', or 'Q'."
+        main_menu
       end
+
     end
 
     def self.budget_check(check_this)
@@ -205,6 +209,10 @@ class CommandLineInterface
           main_menu
         elsif user_menu_selection.upcase == 'M'
           main_menu
+
+        else
+          puts "Sorry, I did get that. Please type 'D', 'B', 'N', or 'M'."
+          update_trip
         end
       end
     end
@@ -219,7 +227,8 @@ class CommandLineInterface
 
        Capital: #{current_selection.capital}
        Currency: #{current_selection.currencyCode}
-       Population: #{current_selection.population}"
+       Population: #{current_selection.population.reverse.scan(/.{3}|.+/).join(",").reverse}"
+      puts
       main_menu
     end
 
