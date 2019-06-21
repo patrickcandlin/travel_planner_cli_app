@@ -57,7 +57,7 @@ class CommandLineInterface
     Type 'I' to GET INFO about a country
     Type 'Q' to QUIT
 
-    Hit return after entering your selection"
+    Hit return after entering your selection".colorize(:light_blue)
     user_response = gets.chomp.upcase
       if user_response == "C"
         create_trip
@@ -96,7 +96,7 @@ class CommandLineInterface
       country = gets.chomp.capitalize
       country_traveling_to = Country.real_country(country)
       Trip.create(budget: user_budget, tripNotes: user_reason, traveler_id: @current_user.id, country_id: country_traveling_to.id)
-      puts "Your trip has been saved!"
+      puts "Your trip has been saved!".colorize(:green)
       puts
       main_menu
     end
@@ -125,7 +125,7 @@ class CommandLineInterface
       else
         user_wants_to_delete = @current_user.user_trips?(user_selection)
         user_wants_to_delete.delete
-        puts "That trip is deleted."
+        puts "That trip is deleted.".colorize(:red)
         main_menu
       end
         
