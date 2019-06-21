@@ -7,12 +7,13 @@ class CommandLineInterface
                                                           __!__
                                                       _____(_)_____
                                                                       ".colorize(:light_blue)
-    puts "Hi, welcome to Tripoggan!"
+    puts "Hi, Welcome to Tripoggan!"
     puts "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW".colorize(:green)
     puts
     puts "If you're a returning user, enter '1'. If you're new, enter '2'."
     user_response = gets.chomp
     if user_response == "1"
+      puts
       puts "Enter username"
       username = gets.chomp
       if Traveler.exists?(userName: username)
@@ -48,7 +49,8 @@ class CommandLineInterface
   end
 
   def self.main_menu
-    puts "  What would you like to do?
+    puts
+    puts "    What would you like to do?
 
     Type 'C' to CREATE a trip
     Type 'R' to REVIEW your trip(s)
@@ -67,13 +69,18 @@ class CommandLineInterface
         delete_trip
       elsif user_response == "Q"
         puts
-        puts "See you soon!"
+        puts "Happy Trails!"
+        puts "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW".colorize(:green)
         puts
       elsif user_response == 'U'
         update_trip
       elsif user_response == "I"
         get_country_info
+      else
+        puts "Type a 'C', 'R', 'U', 'R', 'D', 'I', or 'Q'."
+        main_menu
       end
+
     end
 
     def self.budget_check(check_this)
@@ -92,17 +99,19 @@ class CommandLineInterface
       puts
       puts "...and your reason for traveling?"
       user_reason = gets.chomp
+      puts
       puts "...and, which country are you traveling to?"
       country = gets.chomp.capitalize
       country_traveling_to = Country.real_country(country)
       Trip.create(budget: user_budget, tripNotes: user_reason, traveler_id: @current_user.id, country_id: country_traveling_to.id)
+      puts
       puts "Your trip has been saved!".colorize(:green)
       puts
       main_menu
     end
 
     def self.delete_trip
-      @current_user = Traveler.find_by(userName: @current_user.userName)
+      @current_user.trips.reload
       if @current_user.trips.empty?
         puts
         puts "You don't have any trips to delete."
@@ -111,15 +120,17 @@ class CommandLineInterface
       else
         puts
         puts "Which trip would you like to delete?"
+        puts
         @current_user.trips.each do |trip|
-          puts "ID:#{trip.id}. #{trip.country.countryName}! Why? #{trip.tripNotes}. Budget: #{trip.budget}"
+          puts " ID:#{trip.id} ".red + " #{trip.country.countryName} ".black.on_light_yellow + " Why? #{trip.tripNotes}. Budget: #{trip.budget}"
+          puts
         end
         puts
-        puts "please make your selection by ID number"
+        puts "Please make your selection by" + " ID number".red
+        puts
         puts "Or if you do not want to delete any trips. Please type 'M' for MAIN MENU"
       end
         user_selection = gets.chomp
-      
       if user_selection.capitalize == 'M'
         main_menu
       else
@@ -128,18 +139,18 @@ class CommandLineInterface
         puts "That trip is deleted.".colorize(:red)
         main_menu
       end
-        
+
     end
 
     def self.review_trip
       puts
-      @current_user = Traveler.find_by(userName: @current_user.userName)
+      @current_user.trips.reload
       if @current_user.trips.empty?
         puts "You don't have any trips scheduled."
         puts
         main_menu
       else @current_user.trips.each do |trip|
-        puts "You're going to #{trip.country.countryName}; you've budgeted #{sprintf("%.2f", trip.budget)}. These are your notes: #{trip.tripNotes}"
+        puts "You're going to " + " #{trip.country.countryName} ".black.on_light_yellow + "! You've budgeted #{sprintf("%.2f", trip.budget)}. These are your notes: #{trip.tripNotes}"
           if Getdata.get_rate(trip.country.countryName) == nil
             puts "Sorry, we don't currently have exchange rate information for that country."
             puts
@@ -149,14 +160,12 @@ class CommandLineInterface
           end
         end
         puts
-        puts
-        sleep(3)
         main_menu
       end
     end
 
     def self.update_trip
-      @current_user = Traveler.find_by(userName: @current_user.userName)
+      @current_user.trips.reload
       if @current_user.trips.empty?
         puts
         puts "You don't have any trips to update."
@@ -167,21 +176,25 @@ class CommandLineInterface
         puts "Which trip would you like to update?"
         puts
         @current_user.trips.each do |trip|
-          puts "ID:#{trip.id}. #{trip.country.countryName}! Why? #{trip.tripNotes}. Budget: #{trip.budget}"
+          puts "ID:#{trip.id} ".colorize(:light_blue) + " #{trip.country.countryName} ".black.on_light_yellow + " Why? #{trip.tripNotes}. Budget: #{trip.budget}"
+          puts
         end
-        puts "please make your selection by ID number"
+        puts
+        puts "Please make your selection by " + "ID number".colorize(:light_blue)
         user_selection = gets.chomp
         user_wants_to_update = @current_user.user_trips?(user_selection)
+        puts
         puts "What would you like to update?
-          Type 'D' for DESTINATION
-          Type 'B' for BUDGET
-          Type 'N' for NOTES
-          Type 'M' for MAIN MENU"
+
+          Type " + "'D'".colorize(:light_blue) + " for DESTINATION
+          Type " + "'B'".colorize(:light_blue) + " for BUDGET
+          Type " + "'N'".colorize(:light_blue) + " for NOTES
+          Type " + "'M'".colorize(:light_blue) + " for MAIN MENU"
         user_menu_selection = gets.chomp
         if user_menu_selection.upcase == 'D'
           puts "What would you like to update your destination to be?"
           user_destination_update = gets.chomp
-          the_country_id= Country.find_by(countryName: user_destination_update).id
+          the_country_id = Country.real_country(user_destination_update.capitalize).id
           user_wants_to_update.update(country_id: the_country_id)
           main_menu
         elsif user_menu_selection.upcase == 'B'
@@ -196,19 +209,25 @@ class CommandLineInterface
           main_menu
         elsif user_menu_selection.upcase == 'M'
           main_menu
+
+        else
+          puts "Sorry, I did get that. Please type 'D', 'B', 'N', or 'M'."
+          update_trip
         end
       end
     end
 
     def self.get_country_info
+      puts
       puts "Which country would you like to know more about?"
       user_response = gets.chomp
       current_selection = Country.real_country(user_response.capitalize)
       puts
-      puts "Great! Here's some basic info on #{current_selection.countryName}:
-      Capital: #{current_selection.capital}
-      Currency: #{current_selection.currencyCode}
-      Population: #{current_selection.population}"
+      puts "Great! Here's some basic info on " + " #{current_selection.countryName} ".black.on_light_yellow + ":
+
+       Capital: #{current_selection.capital}
+       Currency: #{current_selection.currencyCode}
+       Population: #{current_selection.population.reverse.scan(/.{3}|.+/).join(",").reverse}"
       puts
       main_menu
     end
