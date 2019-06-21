@@ -1,9 +1,14 @@
 require "pry"
+
 class CommandLineInterface
 
   def self.welcome
-    puts
+    puts "
+                                                          __!__
+                                                      _____(_)_____
+                                                                      ".colorize(:light_blue)
     puts "Hi, welcome to Tripoggan!"
+    puts "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW".colorize(:green)
     puts
     puts "If you're a returning user, enter '1'. If you're new, enter '2'."
     user_response = gets.chomp
