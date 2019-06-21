@@ -73,7 +73,11 @@ class CommandLineInterface
         update_trip
       elsif user_response == "I"
         get_country_info
+      else 
+        puts "Type a 'C', 'R', 'U', 'R', 'D', 'I', or 'Q'."
+        main_menu
       end
+
     end
 
     def self.budget_check(check_this)
@@ -150,7 +154,7 @@ class CommandLineInterface
         end
         puts
         puts
-        sleep(3)
+        #sleep(3)
         main_menu
       end
     end
@@ -181,7 +185,7 @@ class CommandLineInterface
         if user_menu_selection.upcase == 'D'
           puts "What would you like to update your destination to be?"
           user_destination_update = gets.chomp
-          the_country_id= Country.find_by(countryName: user_destination_update).id
+          the_country_id= Country.real_country(user_destination_update.capitalize).id
           user_wants_to_update.update(country_id: the_country_id)
           main_menu
         elsif user_menu_selection.upcase == 'B'
@@ -196,6 +200,10 @@ class CommandLineInterface
           main_menu
         elsif user_menu_selection.upcase == 'M'
           main_menu
+
+        else
+          puts "Sorry, I did get that. Please type 'D', 'B', 'N', or 'M'."
+          update_trip
         end
       end
     end
